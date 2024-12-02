@@ -6,4 +6,4 @@
 
 To run the TypeScript problems:
 
-1. Run `npx ts-node src/{day}/first.ts`
+1. Run `npx ts-node src/{day}/index.ts`
