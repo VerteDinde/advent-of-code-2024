@@ -1,16 +1,15 @@
 import input from "./input";
 
-function uncorruptInput(input: string) {
-  return input.match(/mul\(\d+,\d+\)/g);
-}
-
-function sanitizeEnabledInput(input: string) {
+function sanitizeInput(input: string, enable: boolean) {
+  let output = input;
   // Lol this sucks, can probably use a Regex here?
-  const sanitized = input
-    .split("do()")
-    .map((line) => line.split("don't()")[0])
-    .join("");
-  return uncorruptInput(sanitized);
+  if (enable) {
+    output = input
+      .split("do()")
+      .map((line) => line.split("don't()")[0])
+      .join("");
+  }
+  return output.match(/mul\(\d+,\d+\)/g);
 }
 
 function multiplyMuls(muls: RegExpMatchArray): number {
@@ -26,13 +25,13 @@ function multiplyMuls(muls: RegExpMatchArray): number {
 
 function main() {
   // Looking for mul(x,y)
-  const uncorrupted = uncorruptInput(input);
+  const uncorrupted = sanitizeInput(input, false);
   const sum = multiplyMuls(uncorrupted!);
   console.log("Sum: ", sum);
 
   // Looking for do() and don't(), only multiply if do() is enabled
-  let sanitized = sanitizeEnabledInput(input);
-  const enabledSum = multiplyMuls(sanitized!);
+  let enabled = sanitizeInput(input, true);
+  const enabledSum = multiplyMuls(enabled!);
   console.log("Enabled: ", enabledSum); // Part 2 answer
 }
 
