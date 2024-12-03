@@ -20,14 +20,14 @@ function multiplyMuls(muls: RegExpMatchArray): number {
       total += values[0] * values[1];
     }
   }
-  return total; // Part 1 answer
+  return total;
 }
 
 function main() {
   // Looking for mul(x,y)
   const uncorrupted = sanitizeInput(input, false);
   const sum = multiplyMuls(uncorrupted!);
-  console.log("Sum: ", sum);
+  console.log("Sum: ", sum); // Part 1 answer
 
   // Looking for do() and don't(), only multiply if do() is enabled
   let enabled = sanitizeInput(input, true);
