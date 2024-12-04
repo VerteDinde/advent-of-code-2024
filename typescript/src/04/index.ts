@@ -1,45 +1,46 @@
 import input from "./input";
 
 const XMAS = "XMAS";
-const rows = input.length;
-const columns = input[0].length;
+const ROWS = input.length;
+const COLUMNS = input[0].length;
+const DIRECTIONS = [
+  [-1, -1], // NW
+  [-1, 0], // N
+  [-1, 1], // NE
+  [0, -1], // W
+  [0, 1], // E
+  [1, -1], // SW
+  [1, 0], // S
+  [1, 1], // SE
+];
 
-function dfs(r: number, c: number, i: number) {
-  if (XMAS.length === i) return true;
-  if (r >= rows || r < 0 || c < 0 || c >= columns || input[r][c] !== XMAS[i])
-    return false;
-
-  // @ts-ignore
-  input[r][c] = "#";
-  if (
-    dfs(r + 1, c, i + 1) || // E
-    dfs(r + 1, c + 1, i + 1) || // NE
-    dfs(r + 1, c - 1, i + 1) || // NE
-    dfs(r - 1, c, i + 1) || // W
-    dfs(r - 1, c + 1, i + 1) || // NW
-    dfs(r - 1, c - 1, i + 1) || // SW
-    dfs(r, c + 1, i + 1) || // N
-    dfs(r, c - 1, i + 1) // S
-  ) {
-    input[r][c] = XMAS[i];
-    return true;
+function findStrand(r: number, c: number, dr: number, dc: number): boolean {
+  for (let i = 0; i < XMAS.length; i++) {
+    const dx = r + i * dr;
+    const dy = c + i * dc;
+    if (
+      dx < 0 ||
+      dy < 0 ||
+      dx >= ROWS ||
+      dy >= COLUMNS ||
+      input[dx][dy] !== XMAS[i]
+    ) {
+      return false;
+    }
   }
-
-  input[r][c] = XMAS[i];
-  return false;
+  return true;
 }
 
 function main() {
-  console.log(input);
   let total = 0;
-
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < columns; c++) {
-      if (input[r][c] === XMAS[0] && dfs(r, c, 0)) total++;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLUMNS; c++) {
+      for (const [dr, dc] of DIRECTIONS) {
+        if (findStrand(r, c, dr, dc)) total++;
+      }
     }
   }
-  console.log("Input: ", input);
-  console.log("Total: ", total);
+  console.log("Total:", total);
 }
 
 main();
