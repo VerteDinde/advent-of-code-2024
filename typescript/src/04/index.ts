@@ -40,7 +40,24 @@ function main() {
       }
     }
   }
-  console.log("Total:", total);
+  console.log("Total:", total); // Part 1 answer
+
+  let xMases = 0;
+  for (let r = 1; r < ROWS - 1; r++) {
+    for (let c = 1; c < COLUMNS - 1; c++) {
+      if (input[r][c] === "A") {
+        const mmss =
+          (input[r - 1][c - 1] === "M" && input[r + 1][c + 1] === "S") ||
+          (input[r - 1][c - 1] === "S" && input[r + 1][c + 1] === "M");
+        const ssmm =
+          (input[r - 1][c + 1] === "M" && input[r + 1][c - 1] === "S") ||
+          (input[r - 1][c + 1] === "S" && input[r + 1][c - 1] === "M");
+        if (mmss && ssmm) xMases++;
+      }
+    }
+  }
+
+  console.log("X-Mases: ", xMases); // Part 2 answer
 }
 
 main();
