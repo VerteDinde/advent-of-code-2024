@@ -7,7 +7,7 @@ function sum(arr: number[]) {
 function main() {
   const [rawRules, pages] = input;
 
-  let rules = rawRules.split("\n").map((line) => {
+  const rules = rawRules.split("\n").map((line) => {
     return line.split("|").map((num) => parseInt(num));
   });
 
@@ -26,6 +26,20 @@ function main() {
     .map((x) => x[x.length >> 1]);
 
   console.log("Mid Page Numbers Sum: ", sum(midPageNumbers)); //Part 1 answer
+
+  const ruleSet = new Set(rawRules.split("\n"));
+  let midSum = 0;
+
+  // can't decide if I like for loops or maps more
+  for (const line of pages.split("\n")) {
+    let a = line.split(",");
+    a.sort((a, b) => (ruleSet.has(a + "|" + b) ? -1 : 1));
+    if (a.join(",") !== line) {
+      midSum += +a[a.length >> 1];
+    }
+  }
+
+  console.log("Mid Page Numbers Sum: ", midSum); //Part 2 answer
 }
 
 main();
